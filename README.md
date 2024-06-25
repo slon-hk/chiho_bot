@@ -54,52 +54,52 @@ chiho_bot/
 └── README.md            # Документация
 ```
 
-#CHIHO_BOT
+
+# CHIHO_BOT
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 CHIHO_BOT is a Telegram bot for calculating employees' salaries. The bot allows you to input working hours and hourly rate for each employee and automatically calculates their salary.
 
-##Features
+## Features
 
 -Employee registration
 -Input of working hours
 -Setting hourly rate
 -Salary calculation
 
-##Installation
+## Installation
 
-1.Clone the repository:
+1. Clone the repository:
 
     ```sh
     git clone https://github.com/slon-hk/chiho_bot.git
     cd chiho_bot
     ```
 
-2.Install dependencies:
+2. Install dependencies:
 
     ```sh
     pip install -r requirements.txt
     ```
 
-3.Create a .env file and add your Telegram Bot API Token:
+3. Create a .env file and add your Telegram Bot API Token:
 
     ```env
     BOT_TOKEN=your_telegram_bot_token
     ```
 
-3.Run the bot:
+4. Run the bot:
 
     ```sh
     python3 main.py
     ```
 
-##Technical Details
+## Technical Details
 
-###Project Structure
+### Project Structure
 
 ```plaintext
-
 chiho_bot/
 │
 ├── bot.py               # Main bot file
