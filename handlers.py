@@ -20,22 +20,23 @@ storage = MemoryStorage()
 class FSMFillForm(StatesGroup):
     fill_rate = State()
     fill_houre = State()
+    yes_no_btn = State()
 
 #Start message and registration
 @router.message(CommandStart())
 async def cmd_start(message: types.Message, state: FSMContext):
-    await message.answer("""Привет это бот для подсчета часов и зарплаты!\n
-                            Для начала внесите свою ставку, нажав на кнопку 'ставка'\n
-                            А потом можете вносить отработанные часы с помощбю кнопки 'Внести часы'\n
-                            Чтобы посмотреть все отработанные часы за месяц нажмите на кнопку 'Количество часов\n\n
-                            Приятного пользования!'""", reply_markup=kb.keyboard_main)
+    await message.answer("""Привет это бот для подсчета часов и зарплаты!\nДля начала внесите свою ставку, нажав на кнопку 'ставка'\nА потом можете вносить отработанные часы с помощбю кнопки 'Внести часы'\nЧтобы посмотреть все отработанные часы за месяц нажмите на кнопку 'Количество часов\n\nПриятного пользования!'""", reply_markup=kb.keyboard_main)
     db.start()
     
 # Обработчик для команды "Ставка"
 @router.message(F.text == "Ставка")
 async def fill_rate_start(message: types.Message, state: FSMContext):
-    await message.answer(text='Введите свою ставку')
-    await state.set_state(FSMFillForm.fill_rate)
+    if db.user_exists(message.from_user.id) == False:
+        await message.answer(text='Введите свою ставку')
+        await state.set_state(FSMFillForm.fill_rate)
+    else:
+        await message.answer(text="Вы уже внесли свою ставку.\nХотите изменить ставку?", reply_markup=kb.yes_no_btn_main)
+        await state.set_state(FSMFillForm.yes_no_btn)
 
 # Обработчик для состояния fill_rate
 @router.message(StateFilter(FSMFillForm.fill_rate))
@@ -48,6 +49,12 @@ async def fill_rate(message: types.Message, state: FSMContext):
         await state.clear()
     else:
         await message.answer(text="Это не является числом, введите число")
+
+@router.message(F.text == "Да", StateFilter(FSMFillForm.yes_no_btn))
+async def change_rate(message: types.Message, state: FSMContext):
+    db.delete_user(message.from_user.id)
+    await message.answer(text="Введите ставку")
+    await state.set_state(FSMFillForm.fill_rate)
 
 # Обработчик для команды "Внести часы"
 @router.message(F.text == "Внести часы")
@@ -69,4 +76,4 @@ async def get_houre(message: types.Message, state: FSMContext):
 
 @router.message(F.text == "Количество часов")
 async def get_houre(message: types.Message):
-    await message.answer(db.get_houre(tg_id=message.from_user.id))
+    await message.answer(db.get_hours(tg_id=message.from_user.id))
