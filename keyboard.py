@@ -7,7 +7,7 @@
 
 # UNDER BUTTON
 keyboard_button = [[KeyboardButton(text="Ставка"), KeyboardButton(text="Внести часы")],
-                                   [KeyboardButton(text="Количество часов")]]
+                   [KeyboardButton(text="Количество часов"), KeyboardButton(text="Все часы")]]
 keyboard_main = ReplyKeyboardMarkup(keyboard=keyboard_button, resize_keyboard=True, input_field_placeholder="Выберете пункт меню!")
 
 # Yes or No button

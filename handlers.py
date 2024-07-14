@@ -78,3 +78,7 @@ async def get_houre(message: types.Message, state: FSMContext):
 @router.message(F.text == "Количество часов")
 async def get_houre(message: types.Message):
     await message.answer(db.get_hours(tg_id=message.from_user.id))
+    
+@router.message(F.text == "Все часы")
+async def get_houre(message: types.Message):
+    await message.answer(db.all_stats(tg_id=message.from_user.id))
