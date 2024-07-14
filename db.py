@@ -92,3 +92,23 @@ def delete_user(tg_id):
     finally:
         conn.close()
 
+def all_stats(tg_id):
+    conn = sqlite3.connect("db_chiho.sql")
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM users WHERE tg_id = ?", (tg_id,))
+    info = cur.fetchall()
+    conn.close()
+
+    all_hours = 0
+    result = "Дата             | Часы\n"
+
+    for row in info:
+        data_date = datetime.strptime(row[2], "%Y.%m.%d").date() 
+        hours = float(row[3])
+        result += f"{data_date} | {hours}\n"
+        all_hours += hours
+
+    rate = int(get_rate(tg_id=tg_id))
+    total_salary = all_hours * rate
+    return result + f"\nЗарплата: { '{:,.0f}'.format(total_salary) }"
