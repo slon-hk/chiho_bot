@@ -8,11 +8,12 @@ from colorama import init
 init()
 from colorama import Fore, Back, Style
 
-async def main(): 
+async def main():
     bot = Bot(token="")
     dp = Dispatcher()
     dp.include_router(router)
     await dp.start_polling(bot)
+    await asyncio.sleep(2)
 
 
 if __name__ == "__main__":
@@ -20,3 +21,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print(Style.BRIGHT+Fore.RED+"BOT TURN OFF")
+
